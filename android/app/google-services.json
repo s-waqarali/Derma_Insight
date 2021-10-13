@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "938619574286",
+    "firebase_url": "https://classification-of-skin-cancer-default-rtdb.firebaseio.com",
+    "project_id": "classification-of-skin-cancer",
+    "storage_bucket": "classification-of-skin-cancer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938619574286:android:2d4e48d8ec39d253b1045f",
+        "android_client_info": {
+          "package_name": "com.dermainsight1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938619574286-h1ecrp9tb3gb2hec5el10kafk8qqjm9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuHAbrgkbeOzjtUhy206UqQRiUJlpwvWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938619574286-h1ecrp9tb3gb2hec5el10kafk8qqjm9c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
