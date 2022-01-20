@@ -8,7 +8,16 @@ import Textfield from '../Components/textfield'
 import Globalstyles from '../Components/globalstyles'
 
 const background = require('../images/background.png')
-export default function CreateAccount({navigation}) {
+export default function CreateAccount({ navigation }) {
+
+
+    const [FirstName, setFirstName] = useState('');
+    const [LastName, setLastName] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Password, setPassword] = useState('');
+    const [Gender, setGender] = useState('');
+    const [Contact, setContact] = useState('');
+
     return (
         <View style={styles.container}>
             {/* <Head></Head> */}
@@ -19,14 +28,16 @@ export default function CreateAccount({navigation}) {
                     <View style={Globalstyles.card}>
                         <Screentitle title='Create Account' />
                         <ScrollView style={styles.scrollView}>
-                            <Textfield placeholder='First Name' />
-                            <Textfield placeholder='Last Name' />
-                            <Textfield placeholder='Email' />
-                            <Textfield placeholder='Gender' />
-                            <Textfield placeholder='Contact' />
-                            <Textfield placeholder='Password' />
+
+                            <Textfield placeholder='First Name' onChangeText={FirstName => setFirstName(FirstName)} />
+                            <Textfield placeholder='Last Name' onChangeText={LastName => setLastName(LastName)} />
+                            <Textfield placeholder='Email' onChangeText={Email => setEmail(Email)} />
+                            <Textfield placeholder='Password' onChangeText={Password => setPassword(Password)} />
+                            <Textfield placeholder='Gender' onChangeText={Gender => setGender(Gender)} />
+                            <Textfield placeholder='Contact' onChangeText={Contact => setContact(Contact)} />
+
                         </ScrollView>
-                        <Button title='Submit' icon='arrow-forward' action={()=>navigation.navigate('Sign In')} />
+                        <Button title='Submit' icon='arrow-forward' onPress={() => navigation.navigate('Sign In')} />
                     </View>
 
                 </View>

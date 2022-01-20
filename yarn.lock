@@ -1655,19 +1655,19 @@
   resolved "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@react-native-firebase/app@^14.2.2":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.2.2.tgz#a6bd7cf0d53cabb4d548f1d4805c4bbe5c6dc725"
-  integrity sha512-kp4diBisEJVKwhPMFCj0kLoG+1ofuj3WHH4lx8OPgnSi6hsfYiyN1BrDJLTYTyouhLkNYdyoRYl6sAxFY7K62Q==
+"@react-native-firebase/app@^14.2.3":
+  version "14.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.2.3.tgz#6e451c579b1f126b144810ffce750905a7926296"
+  integrity sha512-PSAYqQGo+/k2KgqOk3sLu0lRxvymvB7Ps4qX2A5JyaYWM419ofZtmYn8glwOB0qWaaMiF+dsh9gAzikxTD3DkA==
   dependencies:
     "@expo/config-plugins" "^4.0.15"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/database@^14.2.2":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-14.2.2.tgz#687ba968e2c48abf686b899b063f396565d02a3a"
-  integrity sha512-IQVRrv3q6FV2+Z2HTs3vD5NExGKIMiT+esqjvj+2PUBtySb+D3ksEnsUE5Q6etCV7/OczcD7VQFXvLPnNCmchg==
+"@react-native-firebase/database@^14.2.3":
+  version "14.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-14.2.3.tgz#ac128d31b4e922af44eb8afee3fa562797dcd856"
+  integrity sha512-JPqd4vbQcU5adeJySwzLzoey4oy1S+c4EBOoqmZAsFKs5YtvoB2THeZbhJUCYJmf1ssw0uylenlADi4QTG/p7w==
 
 "@react-native-firebase/firestore@^14.0.1":
   version "14.0.1"

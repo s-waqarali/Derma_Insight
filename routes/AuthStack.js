@@ -18,7 +18,7 @@ export default function AuthStack() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Profile">
+            <Stack.Navigator initialRouteName="Sign In">
                 <Stack.Screen name="Sign In" component={SignIn}
                     options={{
                         title: 'Derma Insight',

@@ -41,7 +41,19 @@ export default function PatientDetails({ navigation }) {
                             icon='arrow-forward'
                             onPress={
                                 () => {
-                                    console.log(reference)
+                                    database()
+                                        .ref('/Patients/pat')
+                                        .set({
+                                            First_Name: FirstName,
+                                            Last_Name: LastName,
+                                            Contact: Contact,
+                                            Gender: Gender,
+                                            DOB: DOB,
+                                            Diagnosed_By: DiagnosedBy,
+                                            Email: Email
+                            
+                                        })
+                                        .then(() => console.log('Data set.'));
                                     navigation.navigate('Import Image')
                                 }
                             } />

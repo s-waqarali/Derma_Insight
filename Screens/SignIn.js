@@ -9,7 +9,7 @@ import Globalstyles from '../Components/globalstyles'
 
 const background = require('../images/background.png')
 
-export default function SignIn({navigation}) {
+export default function SignIn({ navigation }) {
     return (
         <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
@@ -20,8 +20,8 @@ export default function SignIn({navigation}) {
                             <Screentitle title='Sign In' />
                             <Textfield placeholder='Username' />
                             <Textfield placeholder='Password' />
-                            <Button title='Submit' icon='arrow-forward' action={()=>navigation.navigate('Profile')}/>
-                            <Button title='Create Acoount' icon='arrow-forward' action={()=>navigation.navigate('Create Account')}/>
+                            <Button title='Submit' icon='arrow-forward' onPress={()=>navigation.navigate('Profile')}/>
+                            <Button title='Create Acoount' icon='arrow-forward' onPress={()=>navigation.navigate('Create Account')}/>
                             <Button title='Sign In with Google' icon='arrow-forward' />
                     </View>
 
