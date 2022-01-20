@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
