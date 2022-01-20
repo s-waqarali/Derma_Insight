@@ -1,34 +1,63 @@
 {
   "project_info": {
-    "project_number": "938619574286",
-    "firebase_url": "https://classification-of-skin-cancer-default-rtdb.firebaseio.com",
-    "project_id": "classification-of-skin-cancer",
-    "storage_bucket": "classification-of-skin-cancer.appspot.com"
+    "project_number": "623412317677",
+    "firebase_url": "https://testing1-f3e51-default-rtdb.firebaseio.com",
+    "project_id": "testing1-f3e51",
+    "storage_bucket": "testing1-f3e51.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:938619574286:android:2d4e48d8ec39d253b1045f",
+        "mobilesdk_app_id": "1:623412317677:android:3c5cf19e9337ac282d6be4",
         "android_client_info": {
           "package_name": "com.dermainsight1"
         }
       },
       "oauth_client": [
         {
-          "client_id": "938619574286-h1ecrp9tb3gb2hec5el10kafk8qqjm9c.apps.googleusercontent.com",
+          "client_id": "623412317677-d4solehdjprg31qhnoglaojej8dk6odc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDuHAbrgkbeOzjtUhy206UqQRiUJlpwvWY"
+          "current_key": "AIzaSyBIzgpzzy2zFw-kJ0rTm6Zgsbq3ziy-aRE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "938619574286-h1ecrp9tb3gb2hec5el10kafk8qqjm9c.apps.googleusercontent.com",
+              "client_id": "623412317677-d4solehdjprg31qhnoglaojej8dk6odc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623412317677:android:47640833c20759cd2d6be4",
+        "android_client_info": {
+          "package_name": "com.dermainsightv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623412317677-d4solehdjprg31qhnoglaojej8dk6odc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIzgpzzy2zFw-kJ0rTm6Zgsbq3ziy-aRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623412317677-d4solehdjprg31qhnoglaojej8dk6odc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

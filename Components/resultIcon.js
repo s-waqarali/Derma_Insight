@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     probability: {
-        fontSize: 30,
+        fontSize: 28,
         color: '#328230',
         alignSelf: 'center'
         
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     lesionName: {
-        fontSize: 10,
+        fontSize: 14,
         color: '#328230',
         alignSelf: 'center'
     }

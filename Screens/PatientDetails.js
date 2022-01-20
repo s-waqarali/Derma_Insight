@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ImageBackground, ScrollView, StyleSheet, View, Text } from 'react-native'
 import Button from '../Components/button'
-import Head from '../Components/header'
-import Logo from '../Components/logo'
 import Screentitle from '../Components/screenTitle'
 import Textfield from '../Components/textfield'
 import Globalstyles from '../Components/globalstyles'
+import database from '@react-native-firebase/database';
 
+const reference = database().ref('/Patients/Pat-001');
 const background = require('../images/background.png')
 
 export default function PatientDetails({ navigation }) {
@@ -36,12 +36,14 @@ export default function PatientDetails({ navigation }) {
                             <Textfield placeholder='Email' onChangeText={Email => setEmail(Email)} />
                             <Textfield placeholder='Diagnosed by' onChangeText={DiagnosedBy => setDiagnosedBy(DiagnosedBy)} />
                         </ScrollView>
-                        <Button title='Continue' icon='arrow-forward' 
-                        onPress={
-                            () => {
-                                //write code to store data in firebase 
-                                navigation.navigate('Import Image')
-                            }
+                        <Button
+                            title='Continue'
+                            icon='arrow-forward'
+                            onPress={
+                                () => {
+                                    console.log(reference)
+                                    navigation.navigate('Import Image')
+                                }
                             } />
                     </View>
 

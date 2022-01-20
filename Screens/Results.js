@@ -5,32 +5,34 @@ import ContIcon from '../Components/ContIcon'
 
 const background = require('../images/background.png')
 
-export default function Results({ navigation }) {
+export default function Results({ route, navigation }) {
 
+    const {pred, image_Data} = route.params
+    const probability = pred.substring(2, pred.length - 3).split(',')
     return (
         <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source={require('../images/gallery_icon.png')}
+                        source={image_Data}
                         style={styles.Lesionimage}
                     />
                 </View>
                 <View style={styles.iconContainer}>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[0]+'%'} lesion='Akiec'></ResultIcon>
+                        <ResultIcon probability={probability[1]+'%'} lesion='Bcc'></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[2]+'%'} lesion='Bkl'></ResultIcon>
+                        <ResultIcon probability={probability[3]+'%'} lesion='Df '></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[4]+'%'} lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[5]+'%'} lesion='Nevus'></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability='20%' lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[6]+'%'} lesion='Vasc'></ResultIcon>
                         <ContIcon></ContIcon>
                     </View>
 

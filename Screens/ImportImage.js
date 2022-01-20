@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet, View, Text, Image, TouchableOpacity, PermissionsAndroid } from 'react-native'
 import * as ImagePicker from "react-native-image-picker"
 import Globalstyles from '../Components/globalstyles'
@@ -6,7 +6,44 @@ import Globalstyles from '../Components/globalstyles'
 const background = require('../images/background.png')
 
 export default function ImportImage({ navigation }) {
-    const [imageURI, setimageURI] = useState('')
+
+    const onPress = (prediction, image) => {
+        console.log(prediction + image)
+        navigation.navigate('Results', {pred: prediction, image_Data: {uri: image}})
+    }
+
+    const postRequest = (image) => {
+        if (image != null) {
+            const data = new FormData();
+            data.append('file',
+                {
+                    name: image.assets[0].fileName,
+                    uri: image.assets[0].uri,
+                    type: image.assets[0].type
+                });
+            const url = 'http://10.0.2.2:5000/predict'
+            const requestOptions = {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }
+            fetch(url, requestOptions)
+                .then(response => response.text())
+                .then(data => {
+                    const prediction = data
+                    onPress(prediction, image.assets[0].uri)
+                })
+                .catch((e) => console.log(e))
+                .done()
+            
+            
+        } else {
+            alert('Please Select File first');
+        }
+
+    };
 
     const chooseImage = () => {
         let options = {
@@ -16,41 +53,39 @@ export default function ImportImage({ navigation }) {
             ],
             storageOptions: {
                 skipBackup: true,
-                path: 'images',
+                //path: 'images',
                 mediaType: 'photo'
             },
         };
         ImagePicker.launchImageLibrary(options, (response) => {
-            console.log('Response = ', response);
 
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.errorCode) {
                 console.log('ImagePicker Error: ', response.errorCode);
             } else {
-                setimageURI(response.assets[0].uri) 
+                postRequest(response)
             }
         });
     }
-
 
     const launchCamera = () => {
         let options = {
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
-                mediaType: 'photo'
+                mediaType: 'photo',
+                saveToPhotos: true
             },
         };
         ImagePicker.launchCamera(options, (response) => {
-            console.log('Response = ', response.assets);
 
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.errorCode) {
                 console.log('ImagePicker Error: ', response.errorCode);
             } else {
-                setimageURI(response.assets[0].uri) 
+                postRequest(response)
             }
         });
     }
@@ -75,7 +110,7 @@ export default function ImportImage({ navigation }) {
         } catch (err) {
             console.warn(err);
         }
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -91,12 +126,7 @@ export default function ImportImage({ navigation }) {
                             <Text style={styles.para}>Select a mole or skin lesion picture from your gallery.</Text>
                         </View>
                     </TouchableOpacity>
-
-                    <Image
-                        source={{uri: imageURI}}
-                        style={styles.icon}
-                    ></Image>
-
+                    {/* <Button title='submit' onPress={}></Button> */}
                     <TouchableOpacity onPress={requestCameraPermission}>
                         <View style={Globalstyles.card}>
                             <Image

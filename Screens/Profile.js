@@ -1,14 +1,11 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native'
-import Button from '../Components/button'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-import Head from '../Components/header'
-import Logo from '../Components/logo'
-import Screentitle from '../Components/screenTitle'
-import Textfield from '../Components/textfield'
-import Globalstyles from '../Components/globalstyles'
+
 
 const background = require('../images/background.png')
+
+
 const DATA = [
     {
         id: "1",
@@ -21,43 +18,7 @@ const DATA = [
     {
         id: "3",
         title: "Third Item",
-    },
-    {
-        id: "1",
-        title: "First Item",
-    },
-    {
-        id: "2",
-        title: "Second Item",
-    },
-    {
-        id: "3",
-        title: "Third Item",
-    },
-    {
-        id: "1",
-        title: "First Item",
-    },
-    {
-        id: "2",
-        title: "Second Item",
-    },
-    {
-        id: "3",
-        title: "Third Item",
-    },
-    {
-        id: "1",
-        title: "First Item",
-    },
-    {
-        id: "2",
-        title: "Second Item",
-    },
-    {
-        id: "3",
-        title: "Third Item",
-    },
+    }
 
 ];
 
