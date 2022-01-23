@@ -8,6 +8,9 @@ export default function Textfield(props) {
         placeholder={props.placeholder}
         placeholderTextColor='#338230'
         onChangeText={props.onChangeText}
+        value={props.value}
+        keyboardType={props.keyboardType}
+        secureTextEntry={props.secureTextEntry}
       />
     )
 }

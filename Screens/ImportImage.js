@@ -2,14 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet, View, Text, Image, TouchableOpacity, PermissionsAndroid } from 'react-native'
 import * as ImagePicker from "react-native-image-picker"
 import Globalstyles from '../Components/globalstyles'
+import storage from '@react-native-firebase/storage';
 
 const background = require('../images/background.png')
 
-export default function ImportImage({ navigation }) {
+export default function ImportImage({ route, navigation }) {
+
+    const {patientID, Username} = route.params
 
     const onPress = (prediction, image) => {
-        console.log(prediction + image)
-        navigation.navigate('Results', {pred: prediction, image_Data: {uri: image}})
+        //console.log(prediction + image)
+        navigation.navigate('Results', { pred: prediction, image_Data: { uri: image } })
+    }
+
+    const uploadImage = (image) => {
+        storage()
+            .ref(Username+'/'+patientID)
+            .putFile(image.assets[0].uri)
+            .then((snapshot) => {
+                console.log('User data: ', snapshot);
+            })
+            .catch()
     }
 
     const postRequest = (image) => {
@@ -34,11 +47,12 @@ export default function ImportImage({ navigation }) {
                 .then(data => {
                     const prediction = data
                     onPress(prediction, image.assets[0].uri)
+                    uploadImage(image)
                 })
                 .catch((e) => console.log(e))
                 .done()
-            
-            
+
+
         } else {
             alert('Please Select File first');
         }

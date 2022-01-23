@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements/dist/icons/Icon'
+import { Icon } from 'react-native-elements'
 
 export default function Button(props) {
     return (

@@ -9,10 +9,12 @@ import database from '@react-native-firebase/database';
 const reference = database().ref('/Patients/Pat-001');
 const background = require('../images/background.png')
 
-export default function PatientDetails({ navigation }) {
+export default function PatientDetails({ route, navigation }) {
 
-    const [FirstName, setFirstName] = useState('');
-    const [LastName, setLastName] = useState('');
+    const { Username } = route.params
+
+    const [Patients_ID, setPatients_ID] = useState('');
+    const [Name, setName] = useState('');
     const [DOB, setDOB] = useState('');
     const [Gender, setGender] = useState('');
     const [Contact, setContact] = useState('');
@@ -28,33 +30,45 @@ export default function PatientDetails({ navigation }) {
                     <View style={Globalstyles.card}>
                         <Screentitle title='Patient Details' />
                         <ScrollView style={styles.scrollView}>
-                            <Textfield placeholder='First Name' onChangeText={FirstName => setFirstName(FirstName)} />
-                            <Textfield placeholder='Last Name' onChangeText={LastName => setLastName(LastName)} />
-                            <Textfield placeholder='Date of Birth' onChangeText={DOB => setDOB(DOB)} />
-                            <Textfield placeholder='Gender' onChangeText={Gender => setGender(Gender)} />
-                            <Textfield placeholder='Contact' onChangeText={Contact => setContact(Contact)} />
-                            <Textfield placeholder='Email' onChangeText={Email => setEmail(Email)} />
-                            <Textfield placeholder='Diagnosed by' onChangeText={DiagnosedBy => setDiagnosedBy(DiagnosedBy)} />
+                            <Textfield placeholder='Patients ID' value= {Patients_ID} onChangeText={Patients_ID => setPatients_ID(Patients_ID)} />
+                            <Textfield placeholder='Name' value= {Name} onChangeText={Name => setName(Name)} />
+                            <Textfield placeholder='Date of Birth' value= {DOB} onChangeText={DOB => setDOB(DOB)} />
+                            <Textfield placeholder='Gender' value= {Gender} onChangeText={Gender => setGender(Gender)} />
+                            <Textfield placeholder='Contact' value= {Contact} keyboardType='numeric' onChangeText={Contact => setContact(Contact)} />
+                            <Textfield placeholder='Email' value= {Email} onChangeText={Email => setEmail(Email)} />
+                            <Textfield placeholder='Diagnosed by' value= {DiagnosedBy} onChangeText={DiagnosedBy => setDiagnosedBy(DiagnosedBy)} />
                         </ScrollView>
                         <Button
                             title='Continue'
                             icon='arrow-forward'
                             onPress={
                                 () => {
+                                    const path_patients = '/Patients/'+Username+'/'+Patients_ID
                                     database()
-                                        .ref('/Patients/pat')
+                                        .ref(path_patients)
                                         .set({
-                                            First_Name: FirstName,
-                                            Last_Name: LastName,
+                                            Patients_ID: Patients_ID,
+                                            Name: Name,
                                             Contact: Contact,
                                             Gender: Gender,
                                             DOB: DOB,
                                             Diagnosed_By: DiagnosedBy,
                                             Email: Email
-                            
+
                                         })
-                                        .then(() => console.log('Data set.'));
-                                    navigation.navigate('Import Image')
+                                        .then(
+                                            () => {
+                                                navigation.navigate('Import Image', {patientID: Patients_ID, Username: Username})
+                                                console.log('Data set.')
+                                                setPatients_ID('')
+                                                setDiagnosedBy('')
+                                                setEmail('')
+                                                setContact('')
+                                                setGender('')
+                                                setDOB('')
+                                                setName('')
+                                            });
+                                            
                                 }
                             } />
                     </View>

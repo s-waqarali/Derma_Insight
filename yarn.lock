@@ -1674,6 +1674,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-14.0.1.tgz#8610994db93737f8874c57580e84991359daf8a9"
   integrity sha512-GPjdM21rtiDlVI6oGhLEthp7to80WaeJuq8t25d9LNRJQr+ThvRD01wQ82DxBXXdD6drSBXMi96CH/UDTZ9fYw==
 
+"@react-native-firebase/storage@^14.2.3":
+  version "14.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-14.2.3.tgz#ea90151f50f4a5bfff7b65cb7a85369b6efb802f"
+  integrity sha512-XLml5dEmMYq0dwcPoQS4P84ThJflCsRYJcPb6PKDialSfywQLyKCdJB6ShmqcjnXN26QazIxFXC7uB43DUzo6Q==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -6397,6 +6402,11 @@ react-native-codegen@^0.0.7:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-dialog@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-9.2.0.tgz#16a8221140895daad996fd0e39132e1a24b00ab8"
+  integrity sha512-VXdfo+bAi9ER7+w4aKOWypw8K97C2orvnfnxX4Lup/U8iQB/635V00hgfHEE3s0XScQHftXxm34Fa4iIIjojQA==
 
 react-native-document-picker@^7.1.2:
   version "7.1.2"

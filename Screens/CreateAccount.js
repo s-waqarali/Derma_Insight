@@ -18,9 +18,9 @@ export default function CreateAccount({ navigation }) {
     const [Password, setPassword] = useState('');
     const [Gender, setGender] = useState('');
 
-    const showAlert = (msg) =>
+    const showAlert = (type,msg) =>
         Alert.alert(
-            "Information",
+            type,
             msg,
             [
                 {
@@ -51,24 +51,25 @@ export default function CreateAccount({ navigation }) {
 
                             <Textfield placeholder='Name' onChangeText={Name => setName(Name)} />
                             <Textfield placeholder='Username' onChangeText={Username => setUsername(Username)} />
-                            <Textfield placeholder='Password' onChangeText={Password => setPassword(Password)} />
+                            <Textfield placeholder='Password' secureTextEntry={true} onChangeText={Password => setPassword(Password)} />
                             <Textfield placeholder='Gender' onChangeText={Gender => setGender(Gender)} />
 
                         </ScrollView>
                         <Button title='Submit' icon='arrow-forward' onPress={
                             () => {
-                                const path = '/Users/'+Username
+
+                                const path_Users = '/Users/'+Username
                                 database()
-                                    .ref(path)
+                                    .ref(path_Users)
                                     .set({
                                         Name: Name,
                                         Username: Username,
                                         Password: Password,
                                         Gender: Gender,
                                     })
-                                    .then(showAlert("Account Created Successfully."))
-                                    .catch(function (err){
-                                        console.log(err)})
+                                    .then(()=>showAlert('Info','Account Created Successfully.'))
+                                    .catch(() => showAlert('Error', 'Failed to Create Account.'))
+
                             }
                         } />
                     </View>
