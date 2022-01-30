@@ -2,13 +2,33 @@ import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ResultIcon from '../Components/resultIcon'
 import ContIcon from '../Components/ContIcon'
+import database from '@react-native-firebase/database';
+
 
 const background = require('../images/background.png')
 
 export default function Results({ route, navigation }) {
 
-    const {pred, image_Data} = route.params
-    const probability = pred.substring(2, pred.length - 3).split(',')
+    const {prediction, image_Data, patient, Username} = route.params
+    console.log('Results--' + patient.Patients_ID)
+
+    const probability = prediction.substring(2, prediction.length - 3).split(',').map(Number)
+    const lesionCategory = ['Akiec','Bcc','Bkl','Df','Melanoma','Nevus','Vasc']
+    const Lesion = lesionCategory[probability.indexOf(Math.max(...probability))]
+
+    const uploadPredictions = () => {
+        const path = '/Patients/' + Username + '/' + patient.Patients_ID
+        database()
+            .ref(path)
+            .update({
+                Lesion: Lesion,
+            })
+            .then(
+                navigation.navigate('Report')
+            )
+            .catch()
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
@@ -20,20 +40,20 @@ export default function Results({ route, navigation }) {
                 </View>
                 <View style={styles.iconContainer}>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability={probability[0]+'%'} lesion='Akiec'></ResultIcon>
-                        <ResultIcon probability={probability[1]+'%'} lesion='Bcc'></ResultIcon>
+                        <ResultIcon probability={probability[0] + '%'} lesion='Akiec'></ResultIcon>
+                        <ResultIcon probability={probability[1] + '%'} lesion='Bcc'></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability={probability[2]+'%'} lesion='Bkl'></ResultIcon>
-                        <ResultIcon probability={probability[3]+'%'} lesion='Df '></ResultIcon>
+                        <ResultIcon probability={probability[2] + '%'} lesion='Bkl'></ResultIcon>
+                        <ResultIcon probability={probability[3] + '%'} lesion='Df '></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability={probability[4]+'%'} lesion='Melanoma'></ResultIcon>
-                        <ResultIcon probability={probability[5]+'%'} lesion='Nevus'></ResultIcon>
+                        <ResultIcon probability={probability[4] + '%'} lesion='Melanoma'></ResultIcon>
+                        <ResultIcon probability={probability[5] + '%'} lesion='Nevus'></ResultIcon>
                     </View>
                     <View style={styles.iconsubContainer}>
-                        <ResultIcon probability={probability[6]+'%'} lesion='Vasc'></ResultIcon>
-                        <ContIcon></ContIcon>
+                        <ResultIcon probability={probability[6] + '%'} lesion='Vasc'></ResultIcon>
+                        <ContIcon onPress={uploadPredictions}></ContIcon>
                     </View>
 
                 </View>

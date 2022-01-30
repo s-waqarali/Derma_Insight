@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImportImage from '../Screens/ImportImage';
 import PatientDetails from '../Screens/PatientDetails';
 import Results from '../Screens/Results';
+import Report from '../Screens/Report';
 
 
 const Stack = createNativeStackNavigator();
@@ -80,6 +81,18 @@ export default function AuthStack() {
                     }}
                 />
                 <Stack.Screen name="Results" component={Results}
+                    options={{
+                        title: 'Derma Insight',
+                        headerStyle: {
+                            backgroundColor: '#fff',
+                        },
+                        headerTintColor: '#338230',
+                        headerTitleStyle: {
+                            fontFamily: 'century-gothic',
+                        },
+                    }}
+                />
+                <Stack.Screen name="Report" component={Report}
                     options={{
                         title: 'Derma Insight',
                         headerStyle: {

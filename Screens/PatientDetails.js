@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
 import Button from '../Components/button'
 import Screentitle from '../Components/screenTitle'
 import Textfield from '../Components/textfield'
 import Globalstyles from '../Components/globalstyles'
 import database from '@react-native-firebase/database';
 
-const reference = database().ref('/Patients/Pat-001');
 const background = require('../images/background.png')
 
 export default function PatientDetails({ route, navigation }) {
@@ -43,22 +42,20 @@ export default function PatientDetails({ route, navigation }) {
                             icon='arrow-forward'
                             onPress={
                                 () => {
-                                    const path_patients = '/Patients/'+Username+'/'+Patients_ID
+                                    let path_patients = '/Patients/'+Username+'/'+Patients_ID
+                                    let patient = { Patients_ID: Patients_ID,
+                                                    Name: Name,
+                                                    Contact: Contact,
+                                                    Gender: Gender,
+                                                    DOB: DOB,
+                                                    Diagnosed_By: DiagnosedBy,
+                                                    Email: Email }
                                     database()
                                         .ref(path_patients)
-                                        .set({
-                                            Patients_ID: Patients_ID,
-                                            Name: Name,
-                                            Contact: Contact,
-                                            Gender: Gender,
-                                            DOB: DOB,
-                                            Diagnosed_By: DiagnosedBy,
-                                            Email: Email
-
-                                        })
+                                        .set(patient)
                                         .then(
                                             () => {
-                                                navigation.navigate('Import Image', {patientID: Patients_ID, Username: Username})
+                                                navigation.navigate('Import Image', {patient, Username})
                                                 console.log('Data set.')
                                                 setPatients_ID('')
                                                 setDiagnosedBy('')

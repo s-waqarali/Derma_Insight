@@ -29,7 +29,7 @@ export default function SignIn({ navigation }) {
                     {
                         if(flag){
                             //--------If credentials are right then fetch the patients.
-                            navigation.navigate('Profile',{Name: Name, Username: Username, Patients: patientData})
+                            navigation.navigate('Profile',{Name: Name, Username: Username})
                             setUsername('')
                             setPassword('')
 
@@ -56,42 +56,13 @@ export default function SignIn({ navigation }) {
             .then((snapshot) => {
                 if (snapshot.val().Password == password) {
                     setName(snapshot.val().Name)
-                    fetchData()
                     showAlert('Info','Sign In Successful.',true)
-                    console.log('User data: ', snapshot.val());
                 }
                 else{
                     showAlert('Error','Invalid Credentials.',false)
                 }
             })
             .catch(() => {showAlert('Error','Invalid Credentials.',false)})
-    }
-
-    let Patients = []
-
-    //--------Fetching data of User's Patients
-    const fetchData = () => {
-        const path = '/Patients/' + Username
-        database()
-            .ref(path)
-            .once('value')
-            .then((snapshot) => {
-                Patients = snapshot.val()
-                mapPatients()
-            })
-    }
-
-    const patientData = [
-        //i am here
-    ]
-
-    //--------Mapping data of User's Patients
-    const mapPatients = () => {
-        const patientID = Object.keys(Patients)
-        for (let i = 0; i < patientID.length; i++) {
-            patientData.push(Patients[patientID[i]])
-        }
-        console.log(patientData)
     }
 
     return (

@@ -8,16 +8,16 @@ const background = require('../images/background.png')
 
 export default function ImportImage({ route, navigation }) {
 
-    const {patientID, Username} = route.params
+    const {patient, Username} = route.params
 
     const onPress = (prediction, image) => {
-        //console.log(prediction + image)
-        navigation.navigate('Results', { pred: prediction, image_Data: { uri: image } })
+        navigation.navigate('Results', {prediction, image_Data: { uri: image }, patient, Username})
     }
 
     const uploadImage = (image) => {
+        let path = Username+'/'+patient.Patients_ID
         storage()
-            .ref(Username+'/'+patientID)
+            .ref(path)
             .putFile(image.assets[0].uri)
             .then((snapshot) => {
                 console.log('User data: ', snapshot);
@@ -72,7 +72,6 @@ export default function ImportImage({ route, navigation }) {
             },
         };
         ImagePicker.launchImageLibrary(options, (response) => {
-
             if (response.didCancel) {
                 console.log('User cancelled image picker');
             } else if (response.errorCode) {

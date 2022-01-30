@@ -2,15 +2,15 @@ import React from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 
-export default function ContIcon() {
+export default function ContIcon(props) {
     return (
         <View>
-            <View style={styles.box}>
+            <TouchableOpacity style={styles.box} onPress={props.onPress}>
                 <View style={styles.circle}>
                 <Icon name= 'arrow-forward' size={35} color='white' ></Icon>
                 </View>
                 
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
