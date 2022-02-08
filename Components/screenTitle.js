@@ -11,7 +11,7 @@ export default function Screentitle(props) {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 30,
+        fontSize: 26,
         fontFamily: 'century-gothic',
         color: '#338230'
     },

@@ -68,14 +68,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    imageContainer: {
-        marginTop: 20,
-        height: '30%',
-        width: '90%',
-        alignSelf: 'center',
-        borderWidth: 1,
-        borderRadius: 30
-    },
     iconContainer: {
         flex: 1,
         marginTop: 10,
@@ -95,5 +87,13 @@ const styles = StyleSheet.create({
         height: '90%',
         width: '90%',
         alignSelf: 'center',
+    },
+    imageContainer: {
+        marginTop: 20,
+        height: '30%',
+        width: '90%',
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderRadius: 30
     },
 })

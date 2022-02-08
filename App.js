@@ -14,8 +14,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <SafeAreaProvider>
-      <Report></Report>
-      {/* <AuthStack></AuthStack> */}
+      {/* <Report></Report> */}
+      <AuthStack></AuthStack>
     </SafeAreaProvider>
 
   )

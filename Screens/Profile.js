@@ -64,7 +64,17 @@ export default function Profile({ route, navigation }) {
     const deletePatient = () => {
         const dbpath = 'Patients/' + User.Username + '/' + patientDialog.Patients_ID
         const stpath = User.Username + '/' + patientDialog.Patients_ID
-        database().ref(dbpath).remove().then(storage().ref(stpath).delete().then(setVisible(false)))
+        database()
+            .ref(dbpath)
+            .remove()
+            .then(
+                storage()
+                    .ref(stpath)
+                    .delete()
+                    .then(setVisible(false))
+                    .catch(() => { })
+            )
+            .catch(()=>{})
     };
 
     let patientData = [];
