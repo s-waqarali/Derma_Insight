@@ -93,7 +93,6 @@ export default function PatientDetails({ route, navigation }) {
         }
 
         let { patientValidated, errorType } = await validatePatient(patient)
-        console.log(patientValidated + errorType)
         if (patientValidated) {
             let path_patients = '/Patients/' + User.Username + '/' + Patients_ID
             database()

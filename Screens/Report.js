@@ -3,11 +3,10 @@ import { ImageBackground, ScrollView, StyleSheet, View, Text, Image } from 'reac
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Screentitle from '../Components/screenTitle'
-import Globalstyles from '../Components/globalstyles'
 import database from '@react-native-firebase/database';
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import ResultIcon from '../Components/resultIcon'
-import ContIcon from '../Components/ContIcon'
+import storage from '@react-native-firebase/storage';
 
 const background = require('../images/background.png')
 
@@ -27,60 +26,92 @@ const Bar = (props) => (
 
 export default function Report({ route, navigation }) {
 
-    // const {patient, User} = route.params
+    const { patient, User } = route.params
+    let todayDate = new Date().toISOString().slice(0, 10)
+
+    const [isLoading, setLoading] = useState(true);
+    const [patientData, setpatientData] = useState([])
+    const [imageUrl, setImageUrl] = useState(undefined);
+
+
+    const fetchPatientData = async () => {
+        const path = '/Patients/' + User.Username + '/' + patient.Patients_ID
+        const stpath = User.Username + '/' + patient.Patients_ID
+        await database()
+            .ref(path)
+            .once('value')
+            .then((snapshot) => {
+                setpatientData(snapshot.val())
+                storage()
+                    .ref(stpath)
+                    .getDownloadURL()
+                    .then((url) => {
+                        setImageUrl(url)
+                        setLoading(false)
+                    })
+                    .catch(() => { })
+            })
+    }
+
+    useEffect(() => {
+        fetchPatientData();
+    }, []);
 
     return (
 
         <View style={styles.container}>
             <Head name='arrow-back' onPress={() => navigation.navigate('Profile', { User })}></Head>
-
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.container2}>
                     <View>
                         <Screentitle title='Patient Report' />
-
-                        <Bar icon='info-outline' title='Personal Information'></Bar>
-                        <View style={styles.separator}></View>
-                        <View style={styles.personalInfoCont}>
-                            <View>
-                                <Text style={styles.personalInfoLabels}>Patient ID:</Text>
-                                <Text style={styles.personalInfoLabels}>Patient Name:</Text>
-                                <Text style={styles.personalInfoLabels}>Contact:</Text>
-                                <Text style={styles.personalInfoLabels}>Gender:</Text>
-                                <Text style={styles.personalInfoLabels}>Date:</Text>
-                            </View>
-                            <View>
-                                <Text style={styles.personalInfo}>Patient ID:</Text>
-                                <Text style={styles.personalInfo}>Patient Name:</Text>
-                                <Text style={styles.personalInfo}>Contact:</Text>
-                                <Text style={styles.personalInfo}>Gender:</Text>
-                                <Text style={styles.personalInfo}>Date:</Text>
-                            </View>
-                        </View>
-
-
-                        <Bar icon='image' title='Lesion Image'></Bar>
-                        <View style={styles.separator}></View>
-
-                        <View style={styles.iconContainer}>
-                            <View style={styles.iconsubContainer}>
-                                <ResultIcon probability={'%'} lesion='Vasc'></ResultIcon>
-                                <View style={styles.imageContainer}>
-                                    <Image
-                                        style={styles.Lesionimage}
-                                    />
+                        {isLoading && <Text style={styles.noData}>Loading...</Text>}
+                        {patientData && (<View>
+                            <Bar icon='info-outline' title='Personal Information'></Bar>
+                            <View style={styles.separator}></View>
+                            <View style={styles.personalInfoCont}>
+                                <View>
+                                    <Text style={styles.personalInfoLabels}>Patient ID:</Text>
+                                    <Text style={styles.personalInfoLabels}>Patient Name:</Text>
+                                    <Text style={styles.personalInfoLabels}>Contact:</Text>
+                                    <Text style={styles.personalInfoLabels}>Gender:</Text>
+                                    <Text style={styles.personalInfoLabels}>Date:</Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.personalInfo}>{patientData.Patients_ID}</Text>
+                                    <Text style={styles.personalInfo}>{patientData.Name}</Text>
+                                    <Text style={styles.personalInfo}>{patientData.Contact}</Text>
+                                    <Text style={styles.personalInfo}>{patientData.Gender}</Text>
+                                    <Text style={styles.personalInfo}>{todayDate}</Text>
                                 </View>
                             </View>
-                        </View>
 
-                        <Bar icon='insights' title='Lesion Insights'></Bar>
-                        <View style={styles.separator}></View>
 
-                        <View style={styles.insightContainer}>
-                            <Text style={styles.insightText}>
-                                hello ye app bht achi hai aap isy use karain ham bhe isy use krty hain main McDonalds sy khana leny jaraha hun tum jb tk lesion check kro,
-                            </Text>
-                        </View>
+                            <Bar icon='image' title='Lesion Image'></Bar>
+                            <View style={styles.separator}></View>
+
+                            <View style={styles.iconContainer}>
+                                <View style={styles.iconsubContainer}>
+                                    <ResultIcon probability={patientData.Probability + '%'} lesion={patientData.Lesion}></ResultIcon>
+                                    <View style={styles.imageContainer}>
+                                        <Image
+                                            source={{ uri: imageUrl }}
+                                            style={styles.Lesionimage}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+
+                            <Bar icon='insights' title='Lesion Insights'></Bar>
+                            <View style={styles.separator}></View>
+
+                            <View style={styles.insightContainer}>
+                                <Text style={styles.insightText}>
+                                    hello ye app bht achi hai aap isy use karain ham bhe isy use krty hain main McDonalds sy khana leny jaraha hun tum jb tk lesion check kro,
+                                </Text>
+                            </View>
+                        </View>)}
+
 
                         <Button
                             title='Download Report'
@@ -146,7 +177,7 @@ const styles = StyleSheet.create({
 
     },
     personalInfoLabels: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#328230',
         marginBottom: 4,
         fontWeight: 'bold',
@@ -154,7 +185,7 @@ const styles = StyleSheet.create({
 
     },
     personalInfo: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#328230',
         marginBottom: 4,
         marginLeft: 20,
@@ -162,13 +193,12 @@ const styles = StyleSheet.create({
     },
     Lesionimage: {
         flex: 1,
-        height: '90%',
-        width: '90%',
+        height: '100%',
+        width: '100%',
         alignSelf: 'center',
     },
     imageContainer: {
         backgroundColor: '#FFFFFF90',
-        borderRadius: 20,
         borderColor: '#328230',
         borderWidth: 1,
         width: '40%',
@@ -187,5 +217,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 7,
         marginVertical: 8,
         textAlign: 'justify'
+    },
+    noData: {
+        fontSize: 16,
+        color: '#328230',
+        textAlign: 'center'
     }
 })
