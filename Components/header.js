@@ -1,18 +1,29 @@
 import React from 'react'
-import { StyleSheet, View,Text } from 'react-native';
-import { Header } from 'react-native-elements';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Header, Icon } from 'react-native-elements';
+import { color } from 'react-native-elements/dist/helpers';
+
+export const LeftComponent = (props) => {
+  return(
+      <TouchableOpacity onPress={props.onPress}>
+          <Icon color='#338230' name={props.name}></Icon>
+      </TouchableOpacity>
+  )
+};
+
+
 export default function Head(props) {
     return (
         <View>
-           <Header
-                leftComponent={{ icon: 'arrow-back', color: '#338230', iconStyle: { color: '#338230' } }}
-                centerComponent={<Text style={styles.title}>{props.title}</Text>}
+            <Header
+                leftComponent={<LeftComponent name={props.name} onPress={props.onPress}></LeftComponent>}
+                centerComponent={<Text style={styles.title}>Derma Insight</Text>}
                 containerStyle={{
                     borderBottomWidth: 2,
-                    backgroundColor:'white',
+                    backgroundColor: 'white',
                     paddingTop: -10
                 }}
-                statusBarProps={{barStyle: 'dark-content', backgroundColor: 'white', hidden: false, showHideTransition: 'slide'}}
+                statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white', hidden: false, showHideTransition: 'slide' }}
             />
         </View>
 

@@ -3,19 +3,20 @@ import { ImageBackground, StyleSheet, View, Text, Image, TouchableOpacity, Permi
 import * as ImagePicker from "react-native-image-picker"
 import Globalstyles from '../Components/globalstyles'
 import storage from '@react-native-firebase/storage';
+import Head from '../Components/header';
 
 const background = require('../images/background.png')
 
 export default function ImportImage({ route, navigation }) {
 
-    const {patient, Username} = route.params
+    const { patient, User } = route.params
 
     const onPress = (prediction, image) => {
-        navigation.navigate('Results', {prediction, image_Data: { uri: image }, patient, Username})
+        navigation.navigate('Results', { prediction, image_Data: { uri: image }, patient, User })
     }
 
     const uploadImage = (image) => {
-        let path = Username+'/'+patient.Patients_ID
+        let path = User.Username + '/' + patient.Patients_ID
         storage()
             .ref(path)
             .putFile(image.assets[0].uri)
@@ -127,6 +128,8 @@ export default function ImportImage({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            <Head name='arrow-back' onPress={() => navigation.goBack()}></Head>
+
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.container2}>
                     <TouchableOpacity onPress={chooseImage}>
@@ -139,7 +142,6 @@ export default function ImportImage({ route, navigation }) {
                             <Text style={styles.para}>Select a mole or skin lesion picture from your gallery.</Text>
                         </View>
                     </TouchableOpacity>
-                    {/* <Button title='submit' onPress={}></Button> */}
                     <TouchableOpacity onPress={requestCameraPermission}>
                         <View style={Globalstyles.card}>
                             <Image

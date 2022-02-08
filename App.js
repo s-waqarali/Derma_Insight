@@ -7,13 +7,15 @@ import ImportImage from './Screens/ImportImage';
 import AppStack from './routes/AppStack';
 import AuthStack from './routes/AuthStack';
 import Results from './Screens/Results';
+import Report from './Screens/Report';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AuthStack></AuthStack>
+      <Report></Report>
+      {/* <AuthStack></AuthStack> */}
     </SafeAreaProvider>
 
   )

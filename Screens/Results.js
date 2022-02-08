@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ResultIcon from '../Components/resultIcon'
 import ContIcon from '../Components/ContIcon'
+import Head from '../Components/header'
 import database from '@react-native-firebase/database';
 
 
@@ -9,28 +10,28 @@ const background = require('../images/background.png')
 
 export default function Results({ route, navigation }) {
 
-    const {prediction, image_Data, patient, Username} = route.params
-    console.log('Results--' + patient.Patients_ID)
+    const { prediction, image_Data, patient, User } = route.params
 
     const probability = prediction.substring(2, prediction.length - 3).split(',').map(Number)
-    const lesionCategory = ['Akiec','Bcc','Bkl','Df','Melanoma','Nevus','Vasc']
+    const lesionCategory = ['Akiec', 'Bcc', 'Bkl', 'Df', 'Melanoma', 'Nevus', 'Vasc']
     const Lesion = lesionCategory[probability.indexOf(Math.max(...probability))]
 
     const uploadPredictions = () => {
-        const path = '/Patients/' + Username + '/' + patient.Patients_ID
+        const path = '/Patients/' + User.Username + '/' + patient.Patients_ID
         database()
             .ref(path)
             .update({
                 Lesion: Lesion,
             })
             .then(
-                navigation.navigate('Report')
+                navigation.navigate('Report', { patient, User })
             )
             .catch()
     }
 
     return (
         <View style={styles.container}>
+            <Head></Head>
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.imageContainer}>
                     <Image

@@ -1,9 +1,7 @@
-
 import React from 'react'
 import CreateAccount from '../Screens/CreateAccount';
 import SignIn from '../Screens/SignIn';
 import Profile from '../Screens/Profile';
-import AppStack from './AppStack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImportImage from '../Screens/ImportImage';
@@ -11,26 +9,24 @@ import PatientDetails from '../Screens/PatientDetails';
 import Results from '../Screens/Results';
 import Report from '../Screens/Report';
 
-
 const Stack = createNativeStackNavigator();
-let isLoggedIn = true
 
 export default function AuthStack() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Sign In">
+            <Stack.Navigator initialRouteName="Sign In" screenOptions={{headerShown: false}}>
                 <Stack.Screen name="Sign In" component={SignIn}
-                    options={{
-                        title: 'Derma Insight',
-                        headerStyle: {
-                            backgroundColor: '#fff',
-                        },
-                        headerTintColor: '#338230',
-                        headerTitleStyle: {
-                            fontFamily: 'century-gothic',
-                        },
-                    }}
+                // options={{
+                //     title: 'Derma Insight',
+                //     headerStyle: {
+                //         backgroundColor: '#fff',
+                //     },
+                //     headerTintColor: '#338230',
+                //     headerTitleStyle: {
+                //         fontFamily: 'century-gothic',
+                //     },
+                // }}
                 />
                 <Stack.Screen name="Create Account" component={CreateAccount}
                     options={{
@@ -50,6 +46,7 @@ export default function AuthStack() {
                         headerStyle: {
                             backgroundColor: '#fff',
                         },
+                        headerLeft: (props) => null,
                         headerTintColor: '#338230',
                         headerTitleStyle: {
                             fontFamily: 'century-gothic',

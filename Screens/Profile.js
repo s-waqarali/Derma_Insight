@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList, Alert } from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
+import Head from '../Components/header';
 import Dialog from "react-native-dialog";
 import database from '@react-native-firebase/database';
 import storage from '@react-native-firebase/storage';
+import Button from '../Components/button';
 
 const background = require('../images/background.png')
 
 export default function Profile({ route, navigation }) {
 
-    const { PName, Username } = route.params
-
-    // navigation.reset({
-    //     index: 0,
-    //     routes: [{ name: 'Profile' }],
-    //   });
+    const { User } = route.params
+    console.log(User)
 
     const [visible, setVisible] = useState(false);
     const [patientDialog, setpatientDialog] = useState('');
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([])
-
 
     const Item = ({ Patient }) => (
         <TouchableOpacity style={styles.patient} onPress={() => showDialog(Patient)}>
@@ -44,22 +41,18 @@ export default function Profile({ route, navigation }) {
             msg,
             [{
                 text: "Yes",
-                onPress: () => {
-                    deletePatient()
-                },
+                onPress: () => { deletePatient() },
                 style: "cancel",
             },
             {
                 text: "No",
-                onPress: () => {
-                },
+                onPress: () => { },
                 style: "cancel",
             }
             ],
             {
                 cancelable: true,
-                onDismiss: () =>
-                    Alert.alert("Info Dismissed.")
+                onDismiss: () => Alert.alert("Info Dismissed.")
             }
         );
     }
@@ -69,17 +62,15 @@ export default function Profile({ route, navigation }) {
     };
 
     const deletePatient = () => {
-        const dbpath = 'Patients/' + Username + '/' + patientDialog.Patients_ID
-        const stpath = Username + '/' + patientDialog.Patients_ID
+        const dbpath = 'Patients/' + User.Username + '/' + patientDialog.Patients_ID
+        const stpath = User.Username + '/' + patientDialog.Patients_ID
         database().ref(dbpath).remove().then(storage().ref(stpath).delete().then(setVisible(false)))
     };
 
-
     let patientData = [];
 
-    //--------Fetching data of User's Patients
     const fetchData = async () => {
-        const path = '/Patients/' + Username
+        const path = '/Patients/' + User.Username
         await database()
             .ref(path)
             .once('value')
@@ -93,7 +84,7 @@ export default function Profile({ route, navigation }) {
                     setLoading(false)
                     setData(patientData)
                 }
-                else{
+                else {
                     setData([])
                 }
 
@@ -106,34 +97,33 @@ export default function Profile({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            <Head></Head>
+
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.container2}>
-
                     <View style={styles.profileinfo}>
                         <View style={styles.profilepic}></View>
-                        <Text style={styles.profileText}>{PName}</Text>
+                        <View style={styles.profileTextView}>
+                            <Text style={styles.profileText}>{User.Name}</Text>
+                            <Text style={styles.profileText}>{User.Username}</Text>
+                            <Text style={styles.profileText}>{User.Gender}</Text>
+                        </View>
                     </View>
-
                     <View style={styles.card}>
-
                         <View style={styles.iconContainer}>
                             <Text style={styles.title}>Patients</Text>
                             <TouchableOpacity
                                 style={styles.icon}
-
                                 onPress={fetchData}>
-
                                 <Icon name='refresh' color='#338230'></Icon>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.icon}
-
                                 onPress={
                                     () => {
-                                        navigation.navigate('Patient details', { Username: Username })
+                                        navigation.navigate('Patient details', { User })
                                     }
                                 }>
-
                                 <Icon name='add-circle' color='#338230'></Icon>
                             </TouchableOpacity>
                         </View>
@@ -146,7 +136,7 @@ export default function Profile({ route, navigation }) {
                                 showsVerticalScrollIndicator={true}
                             />
                         )}
-
+                        <Button title='Logout' icon='arrow-back' onPress={() => navigation.navigate('Sign In')} />
                     </View>
                     {/* <View style={styles.dialogContainer}> */}
                     <Dialog.Container visible={visible}>
@@ -183,39 +173,41 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     profileinfo: {
+        flexDirection: 'row',
         backgroundColor: '#338230',
         width: '80%',
-        height: '25%',
+        height: '22%',
         borderRadius: 20,
         alignSelf: 'center',
-        marginTop: 40,
+        marginTop: 30,
         borderBottomRightRadius: 5,
         borderBottomLeftRadius: 5
     },
     profilepic: {
-        height: '75%',
-        width: '40%',
+        height: '77%',
+        width: '35%',
         backgroundColor: 'white',
-        marginTop: -30,
+        marginTop: -25,
         marginLeft: 15,
         borderRadius: 15,
         borderColor: '#338230',
-        borderWidth: 1
+        borderWidth: 1,
     },
     profileText: {
         fontSize: 14,
         color: 'white',
-        marginTop: 4,
-        //marginLeft: 20
+    },
+    profileTextView: {
+        margin: 10
     },
     card: {
         backgroundColor: '#FFFFFF90',
         borderRadius: 20,
         width: '80%',
-        height: '70%',
+        height: '75%',
         alignSelf: 'center',
         paddingVertical: 20,
-        marginTop: -25,
+        marginTop: -30,
 
     },
     title: {
