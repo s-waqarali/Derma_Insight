@@ -35,7 +35,7 @@ export default function ImportImage({ route, navigation }) {
                     uri: image.assets[0].uri,
                     type: image.assets[0].type
                 });
-            const url = 'http://10.0.2.2:5000/predict'
+            const url = 'http://192.168.0.110:8080/predict'
             const requestOptions = {
                 method: 'POST',
                 body: data,

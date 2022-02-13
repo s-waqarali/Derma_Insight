@@ -11,7 +11,6 @@ export const LeftComponent = (props) => {
   )
 };
 
-
 export default function Head(props) {
     return (
         <View>
@@ -21,7 +20,7 @@ export default function Head(props) {
                 containerStyle={{
                     borderBottomWidth: 2,
                     backgroundColor: 'white',
-                    paddingTop: -10
+                    paddingTop: 15
                 }}
                 statusBarProps={{ barStyle: 'dark-content', backgroundColor: 'white', hidden: false, showHideTransition: 'slide' }}
             />

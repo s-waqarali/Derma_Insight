@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList, Alert } from 'react-native'
+import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList, Alert, Image } from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import Head from '../Components/header';
 import Dialog from "react-native-dialog";
@@ -12,12 +12,22 @@ const background = require('../images/background.png')
 export default function Profile({ route, navigation }) {
 
     const { User } = route.params
+    let avatar = null
+    if(User.Gender=='female' || User.Gender=='Female'){
+        avatar = require('../images/femaleAvatar.png')
+    }
+    else{
+        avatar = require('../images/maleAvatar.png')
+    }
+
     console.log(User)
 
-    const [visible, setVisible] = useState(false);
-    const [patientDialog, setpatientDialog] = useState('');
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([])
+    let [visible, setVisible] = useState(false);
+    let [patient, setpatient] = useState('');
+    let [isLoading, setLoading] = useState(true);
+    let [data, setData] = useState([])
+
+    let patientData = [];
 
     const Item = ({ Patient }) => (
         <TouchableOpacity style={styles.patient} onPress={() => showDialog(Patient)}>
@@ -31,7 +41,7 @@ export default function Profile({ route, navigation }) {
     );
 
     const showDialog = (Patient) => {
-        setpatientDialog(Patient)
+        setpatient(Patient)
         setVisible(true);
     };
 
@@ -62,8 +72,8 @@ export default function Profile({ route, navigation }) {
     };
 
     const deletePatient = () => {
-        const dbpath = 'Patients/' + User.Username + '/' + patientDialog.Patients_ID
-        const stpath = User.Username + '/' + patientDialog.Patients_ID
+        const dbpath = 'Patients/' + User.Username + '/' + patient.Patients_ID
+        const stpath = User.Username + '/' + patient.Patients_ID
         database()
             .ref(dbpath)
             .remove()
@@ -74,10 +84,8 @@ export default function Profile({ route, navigation }) {
                     .then(setVisible(false))
                     .catch(() => { })
             )
-            .catch(()=>{})
+            .catch(() => { })
     };
-
-    let patientData = [];
 
     const fetchData = async () => {
         const path = '/Patients/' + User.Username
@@ -97,26 +105,29 @@ export default function Profile({ route, navigation }) {
                 else {
                     setData([])
                 }
-
-            })
+            }).catch(
+                () => console.log('Error')
+            )
     }
 
     useEffect(() => {
+        console.log('---------------')
         fetchData();
     }, []);
 
     return (
         <View style={styles.container}>
             <Head></Head>
-
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
                 <View style={styles.container2}>
                     <View style={styles.profileinfo}>
-                        <View style={styles.profilepic}></View>
+                        <View style={styles.profilepic}>
+                            <Image source={avatar} style={styles.avatar}></Image>
+                        </View>
                         <View style={styles.profileTextView}>
                             <Text style={styles.profileText}>{User.Name}</Text>
-                            <Text style={styles.profileText}>{User.Username}</Text>
-                            <Text style={styles.profileText}>{User.Gender}</Text>
+                            <Text style={styles.profileText}>{User.Designation}</Text>
+                            <Text style={styles.profileText}>{User.Organization}</Text>
                         </View>
                     </View>
                     <View style={styles.card}>
@@ -150,18 +161,23 @@ export default function Profile({ route, navigation }) {
                     </View>
                     {/* <View style={styles.dialogContainer}> */}
                     <Dialog.Container visible={visible}>
-                        <Dialog.Title style={styles.patinetID}>{patientDialog.Name}</Dialog.Title>
-                        <Dialog.Description style={styles.patientInfo}>ID: {patientDialog.Patients_ID}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>Email: {patientDialog.Email}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>Gender: {patientDialog.Gender}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>DOB: {patientDialog.DOB}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>Contact: {patientDialog.Contact}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>Diagnosed By: {patientDialog.Diagnosed_By}</Dialog.Description>
-                        <Dialog.Description style={styles.patientInfo}>Lesion: {patientDialog.Lesion}</Dialog.Description>
+                        <Dialog.Title style={styles.patinetID}>{patient.Name}</Dialog.Title>
+                        <Dialog.Description style={styles.patientInfo}>ID: {patient.Patients_ID}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>Email: {patient.Email}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>Gender: {patient.Gender}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>DOB: {patient.DOB}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>Contact: {patient.Contact}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>Diagnosed By: {patient.Diagnosed_By}</Dialog.Description>
+                        <Dialog.Description style={styles.patientInfo}>Lesion: {patient.Lesion}</Dialog.Description>
                         <Dialog.Button label="Cancel" onPress={handleCancel} />
                         <Dialog.Button label="Delete"
                             onPress={
                                 () => showAlert('Information', 'Are you sure you want to delete it?')
+                            }
+                        />
+                        <Dialog.Button label="Check Report"
+                            onPress={() => {
+                            }
                             }
                         />
                     </Dialog.Container>
@@ -194,8 +210,8 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 5
     },
     profilepic: {
-        height: '77%',
-        width: '35%',
+        height: '70%',
+        width: '30%',
         backgroundColor: 'white',
         marginTop: -25,
         marginLeft: 15,
@@ -271,5 +287,12 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#328230',
         textAlign: 'center'
-    }
+    },
+    avatar: {
+        flex: 1,
+        height: '100%',
+        width: '100%',
+        alignSelf: 'center',
+        borderRadius: 20
+    },
 })

@@ -86,7 +86,7 @@ export default function SignIn({ navigation }) {
                                 checkCredentials(Username, Password)
                             }}/>
                         <Button title='Create Acoount' icon='account-circle' onPress={() => navigation.navigate('Create Account')} />
-                        <Button title='Sign In with Google' icon='supervised-user-circle' />
+                        <Button title='Check Reports' icon='supervised-user-circle' onPress={() => navigation.navigate('Patient Report')} />
                     </View>
                 </View>
             </ImageBackground>

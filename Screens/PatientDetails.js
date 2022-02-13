@@ -38,14 +38,16 @@ export default function PatientDetails({ route, navigation }) {
     }, []);
 
     const patientExist = async (Patients_ID) => {
-        let patients = {}
+        let patients = null
         let path_patients = '/Patients/' + User.Username
-        await database().ref(path_patients).once('value').then((snapshot) => { patients = snapshot.val() })
-        if (Patients_ID in patients) {
-            return true
-        }
-        else {
-            return false
+        await database().ref(path_patients).once('value').then((snapshot) => { patients = snapshot.val() }).catch()
+        if(patients!=null){
+            if (Patients_ID in patients) {
+                return true
+            }
+            else {
+                return false
+            }
         }
     }
 

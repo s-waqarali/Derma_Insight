@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, View, Text, Image } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { ImageBackground, ScrollView, StyleSheet, View, Text, Image, Alert } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Screentitle from '../Components/screenTitle'
@@ -7,6 +7,8 @@ import database from '@react-native-firebase/database';
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import ResultIcon from '../Components/resultIcon'
 import storage from '@react-native-firebase/storage';
+import { captureRef } from "react-native-view-shot";
+
 
 const background = require('../images/background.png')
 
@@ -26,13 +28,34 @@ const Bar = (props) => (
 
 export default function Report({ route, navigation }) {
 
-    const { patient, User } = route.params
+    const { patient, User, flag } = route.params
     let todayDate = new Date().toISOString().slice(0, 10)
 
     const [isLoading, setLoading] = useState(true);
     const [patientData, setpatientData] = useState([])
     const [imageUrl, setImageUrl] = useState(undefined);
 
+    let refView = useRef(null)
+
+    let takeScreenShot = () => {
+        captureRef(refView, {
+            format: "jpg",
+            quality: 1
+        }).then(
+            uri => uploadImage(uri),
+            error => console.error("Oops, snapshot failed", error)
+        );
+    }
+
+    const uploadImage = (uri) => {
+        let path = User.Username + '_' + patient.Patients_ID + '_Report'
+        storage()
+            .ref(path)
+            .putFile(uri)
+            .then(() => {
+            })
+            .catch()
+    }
 
     const fetchPatientData = async () => {
         const path = '/Patients/' + User.Username + '/' + patient.Patients_ID
@@ -60,67 +83,70 @@ export default function Report({ route, navigation }) {
     return (
 
         <View style={styles.container}>
-            <Head name='arrow-back' onPress={() => navigation.navigate('Profile', { User })}></Head>
-            <ImageBackground source={background} resizeMode="cover" style={styles.image}>
-                <View style={styles.container2}>
-                    <View>
-                        <Screentitle title='Patient Report' />
-                        {isLoading && <Text style={styles.noData}>Loading...</Text>}
-                        {patientData && (<View>
-                            <Bar icon='info-outline' title='Personal Information'></Bar>
-                            <View style={styles.separator}></View>
-                            <View style={styles.personalInfoCont}>
-                                <View>
-                                    <Text style={styles.personalInfoLabels}>Patient ID:</Text>
-                                    <Text style={styles.personalInfoLabels}>Patient Name:</Text>
-                                    <Text style={styles.personalInfoLabels}>Contact:</Text>
-                                    <Text style={styles.personalInfoLabels}>Gender:</Text>
-                                    <Text style={styles.personalInfoLabels}>Date:</Text>
-                                </View>
-                                <View>
-                                    <Text style={styles.personalInfo}>{patientData.Patients_ID}</Text>
-                                    <Text style={styles.personalInfo}>{patientData.Name}</Text>
-                                    <Text style={styles.personalInfo}>{patientData.Contact}</Text>
-                                    <Text style={styles.personalInfo}>{patientData.Gender}</Text>
-                                    <Text style={styles.personalInfo}>{todayDate}</Text>
-                                </View>
-                            </View>
+            <Head name='arrow-back' onPress={() => {
+                if (flag) {
+                    navigation.goBack()
+                }
+                else {
+                    navigation.navigate('Profile', { User: User })
+                }
+            }}></Head>
+            <View style={styles.screenshotView} ref={refView} collapsable={false}>
 
-
-                            <Bar icon='image' title='Lesion Image'></Bar>
-                            <View style={styles.separator}></View>
-
-                            <View style={styles.iconContainer}>
-                                <View style={styles.iconsubContainer}>
-                                    <ResultIcon probability={patientData.Probability + '%'} lesion={patientData.Lesion}></ResultIcon>
-                                    <View style={styles.imageContainer}>
-                                        <Image
-                                            source={{ uri: imageUrl }}
-                                            style={styles.Lesionimage}
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-
-                            <Bar icon='insights' title='Lesion Insights'></Bar>
-                            <View style={styles.separator}></View>
-
-                            <View style={styles.insightContainer}>
-                                <Text style={styles.insightText}>
-                                    hello ye app bht achi hai aap isy use karain ham bhe isy use krty hain main McDonalds sy khana leny jaraha hun tum jb tk lesion check kro,
-                                </Text>
-                            </View>
-                        </View>)}
-
-
-                        <Button
-                            title='Download Report'
-                            icon='file-download'
-                        />
+                <Screentitle title='Patient Report' />
+                {patientData && (<View>
+                    <Bar icon='info-outline' title='Personal Information'></Bar>
+                    <View style={styles.separator}></View>
+                    <View style={styles.personalInfoCont}>
+                        <View>
+                            <Text style={styles.personalInfoLabels}>Patient ID:</Text>
+                            <Text style={styles.personalInfoLabels}>Patient Name:</Text>
+                            <Text style={styles.personalInfoLabels}>Contact:</Text>
+                            <Text style={styles.personalInfoLabels}>Gender:</Text>
+                            <Text style={styles.personalInfoLabels}>Date:</Text>
+                        </View>
+                        <View>
+                            <Text style={styles.personalInfo}>{patientData.Patients_ID}</Text>
+                            <Text style={styles.personalInfo}>{patientData.Name}</Text>
+                            <Text style={styles.personalInfo}>{patientData.Contact}</Text>
+                            <Text style={styles.personalInfo}>{patientData.Gender}</Text>
+                            <Text style={styles.personalInfo}>{todayDate}</Text>
+                        </View>
                     </View>
-                </View>
 
-            </ImageBackground>
+
+                    <Bar icon='image' title='Lesion Image'></Bar>
+                    <View style={styles.separator}></View>
+
+                    <View style={styles.iconContainer}>
+                        <View style={styles.iconsubContainer}>
+                            <ResultIcon probability={patientData.Probability + '%'} lesion={patientData.Lesion}></ResultIcon>
+                            <View style={styles.imageContainer}>
+                                {isLoading && <Text style={styles.noData}>Loading...</Text>}
+                                <Image
+                                    source={{ uri: imageUrl }}
+                                    style={styles.Lesionimage}
+                                />
+                            </View>
+                        </View>
+                    </View>
+
+                    <Bar icon='insights' title='Lesion Insights'></Bar>
+                    <View style={styles.separator}></View>
+
+                    <View style={styles.insightContainer}>
+                        <Text style={styles.insightText}>
+                        </Text>
+                    </View>
+                    <View style={styles.separator}></View>
+                    <Text style={styles.rightsText}>Generated by Derma Insight</Text>
+                </View>)}
+            </View>
+            <Button
+                title='Upload Report'
+                icon='upload-file'
+                onPress={() => takeScreenShot()}
+            />
         </View>
     )
 }
@@ -131,9 +157,6 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-    },
-    container2: {
-        marginTop: 20,
     },
     scrollView: {
         height: '75%',
@@ -165,19 +188,19 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     separator: {
-        height: 2,
+        height: 1,
         backgroundColor: '#A9A9A9',
         width: '90%',
         alignSelf: 'center',
-        marginBottom: 15
+        marginBottom: 10
     },
     personalInfoCont: {
         flexDirection: 'row',
-        marginBottom: 15
+        marginBottom: 10
 
     },
     personalInfoLabels: {
-        fontSize: 15,
+        fontSize: 13,
         color: '#328230',
         marginBottom: 4,
         fontWeight: 'bold',
@@ -185,7 +208,7 @@ const styles = StyleSheet.create({
 
     },
     personalInfo: {
-        fontSize: 15,
+        fontSize: 13,
         color: '#328230',
         marginBottom: 4,
         marginLeft: 20,
@@ -210,7 +233,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: '90%',
         alignSelf: 'center',
-        height: '17%'
+        height: '21%',
+        marginBottom: 5
     },
     insightText: {
         fontSize: 13,
@@ -222,5 +246,14 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#328230',
         textAlign: 'center'
+    },
+    screenshotView: {
+        backgroundColor: 'white',
+        paddingTop: 20,
+        marginBottom: -50
+    },
+    rightsText: {
+        textAlign: 'center',
+        color: 'gray',
     }
 })

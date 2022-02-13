@@ -26,7 +26,7 @@ export default function Results({ route, navigation }) {
                 Probability: Probability
             })
             .then(
-                navigation.navigate('Report', { patient, User })
+                navigation.navigate('Report', { patient, User, flag: false })
             )
             .catch()
     }
