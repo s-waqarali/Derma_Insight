@@ -9,8 +9,6 @@ import PatientDetails from '../Screens/PatientDetails';
 import Results from '../Screens/Results';
 import Report from '../Screens/Report';
 import PatientReport from '../Screens/PatientReport';
-import ShowReport from '../Screens/ShowReport';
-
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +24,6 @@ export default function AuthStack() {
                 <Stack.Screen name="Patient details" component={PatientDetails}/>
                 <Stack.Screen name="Import Image" component={ImportImage} />
                 <Stack.Screen name="Patient Report" component={PatientReport}/>
-                <Stack.Screen name="Show Report" component={ShowReport}/>
                 <Stack.Screen name="Results" component={Results}/>
             </Stack.Navigator>
         </NavigationContainer>

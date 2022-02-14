@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, View, Keyboard, Alert } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, View, Keyboard, Alert, ToastAndroid } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Screentitle from '../Components/screenTitle'
@@ -41,7 +41,7 @@ export default function PatientDetails({ route, navigation }) {
         let patients = null
         let path_patients = '/Patients/' + User.Username
         await database().ref(path_patients).once('value').then((snapshot) => { patients = snapshot.val() }).catch()
-        if(patients!=null){
+        if (patients != null) {
             if (Patients_ID in patients) {
                 return true
             }
@@ -102,8 +102,7 @@ export default function PatientDetails({ route, navigation }) {
                 .set(patient)
                 .then(
                     () => {
-                        navigation.navigate('Import Image', { patient, User })
-                        console.log('Data set.')
+                        ToastAndroid.show('Patient added.', ToastAndroid.SHORT)
                         setPatients_ID('')
                         setDiagnosedBy('')
                         setEmail('')
@@ -111,6 +110,7 @@ export default function PatientDetails({ route, navigation }) {
                         setGender('')
                         setDOB('')
                         setName('')
+                        navigation.navigate('Import Image', { patient, User })
                     });
         }
         else {

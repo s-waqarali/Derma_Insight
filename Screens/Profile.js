@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList, Alert, Image } from 'react-native'
+import { ImageBackground, StyleSheet, View, Text, TouchableOpacity, FlatList, Alert, Image, BackHandler, ToastAndroid } from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import Head from '../Components/header';
 import Dialog from "react-native-dialog";
@@ -13,10 +13,10 @@ export default function Profile({ route, navigation }) {
 
     const { User } = route.params
     let avatar = null
-    if(User.Gender=='female' || User.Gender=='Female'){
+    if (User.Gender == 'female' || User.Gender == 'Female') {
         avatar = require('../images/femaleAvatar.png')
     }
-    else{
+    else {
         avatar = require('../images/maleAvatar.png')
     }
 
@@ -81,10 +81,17 @@ export default function Profile({ route, navigation }) {
                 storage()
                     .ref(stpath)
                     .delete()
-                    .then(setVisible(false))
+                    .then(
+                        () => {
+                            ToastAndroid.show('Patient deleted, please refresh.', ToastAndroid.SHORT)
+                            setVisible(false)
+                        }
+                    )
                     .catch(() => { })
             )
-            .catch(() => { })
+            .catch(() => {
+                ToastAndroid.show('Unable to delete.', ToastAndroid.SHORT)
+            })
     };
 
     const fetchData = async () => {
@@ -111,7 +118,11 @@ export default function Profile({ route, navigation }) {
     }
 
     useEffect(() => {
-        console.log('---------------')
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+        return () => backHandler.remove()
+    }, [])
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -173,11 +184,6 @@ export default function Profile({ route, navigation }) {
                         <Dialog.Button label="Delete"
                             onPress={
                                 () => showAlert('Information', 'Are you sure you want to delete it?')
-                            }
-                        />
-                        <Dialog.Button label="Check Report"
-                            onPress={() => {
-                            }
                             }
                         />
                     </Dialog.Container>

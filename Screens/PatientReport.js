@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, View, Text, Alert, Image } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, View, Text, Alert, Image, ToastAndroid } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Screentitle from '../Components/screenTitle'
@@ -13,38 +13,25 @@ export default function PatientReport({ navigation }) {
 
     const [Patients_ID, setPatients_ID] = useState('');
     const [Username, setUsername] = useState('');
+    const [isLoadingReport, setLoadingReport] = useState(false);
+    const [isLoadingView, setLoadingView] = useState(true);
     const [ImageUrl, setImageUrl] = useState(undefined);
 
-    const showAlert = (type, msg, flag) =>
-        Alert.alert(
-            type,
-            msg,
-            [{
-                text: "OK",
-                onPress: () => {
-                    if (flag) {
-                        navigation.navigate('Sign In')
-                    }
-                },
-                style: "cancel",
-            }],
-            {
-                cancelable: true,
-                onDismiss: () => Alert.alert("Info Dismissed."),
-            }
-        );
-
-    const showReport = (Username, Patients_ID) => {
-        let report = 'hammad123_P_01_Report'
+    const showReport = () => {
+        let report = Username + '_' + Patients_ID + '_Report'
         console.log(report)
         storage()
             .ref(report)
             .getDownloadURL()
             .then((url) => {
+                console.log(url)
                 setImageUrl(url)
+                setLoadingView(false)
+                setLoadingReport(true)
             })
-            .catch(() => {console.log('error') })
-        
+            .catch(() => {
+                ToastAndroid.show('No Report Found', ToastAndroid.SHORT)
+            })
     }
 
     return (
@@ -53,12 +40,18 @@ export default function PatientReport({ navigation }) {
             <Head name='arrow-back' onPress={() => navigation.goBack()}></Head>
 
             <ImageBackground source={background} resizeMode="cover" style={styles.image}>
-                <View style={Globalstyles.card}>
+                {isLoadingView && (<View style={Globalstyles.card}>
                     <Screentitle title='Check Report' />
                     <Textfield placeholder='Patients ID' value={Patients_ID} onChangeText={Patients_ID => setPatients_ID(Patients_ID)} />
                     <Textfield placeholder='Doctors Username' value={Username} onChangeText={Username => setUsername(Username)} />
-                    <Button title='Continue' icon='arrow-forward' onPress={showReport} />
-                </View>
+                    <Button title='Continue' icon='arrow-forward' onPress={() => { showReport() }} />
+                </View>)}
+                {isLoadingReport && (<View>
+                    <Image
+                        source={{ uri: ImageUrl }}
+                        style={styles.Lesionimage}
+                    />
+                </View>)}
             </ImageBackground>
         </View>
     )
@@ -71,27 +64,9 @@ const styles = StyleSheet.create({
     image: {
         flex: 1,
     },
-    scrollView: {
-        height: '68%',
-    },
-    scrollViewOffShow: {
-        height: '75%',
-    },
     Lesionimage: {
-        flex: 1,
         height: '100%',
         width: '100%',
         alignSelf: 'center',
-    },
-    noData: {
-        fontSize: 16,
-        color: '#328230',
-        textAlign: 'center'
-    },
-    imageContainer: {
-        backgroundColor: '#FFFFFF90',
-        borderColor: '#328230',
-        borderWidth: 1,
-        width: '40%',
     },
 })

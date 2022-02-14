@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ImageBackground, ScrollView, StyleSheet, View, Text, Image, Alert } from 'react-native'
+import { ImageBackground, ScrollView, StyleSheet, View, Text, Image, ToastAndroid } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Screentitle from '../Components/screenTitle'
@@ -53,8 +53,12 @@ export default function Report({ route, navigation }) {
             .ref(path)
             .putFile(uri)
             .then(() => {
+                ToastAndroid.show('Report uploaded', ToastAndroid.SHORT)
             })
-            .catch()
+            .catch(() => {
+                ToastAndroid.show('Unable to upload.', ToastAndroid.SHORT)
+            }
+            )
     }
 
     const fetchPatientData = async () => {
@@ -70,6 +74,7 @@ export default function Report({ route, navigation }) {
                     .getDownloadURL()
                     .then((url) => {
                         setImageUrl(url)
+                        console.log(url)
                         setLoading(false)
                     })
                     .catch(() => { })

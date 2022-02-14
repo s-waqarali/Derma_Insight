@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ImageBackground, StyleSheet, View, Alert, Keyboard } from 'react-native'
+import { ImageBackground, StyleSheet, View, Alert, Keyboard, ToastAndroid } from 'react-native'
 import Button from '../Components/button'
 import Head from '../Components/header'
 import Logo from '../Components/logo'
@@ -59,7 +59,7 @@ export default function SignIn({ navigation }) {
             .once('value')
             .then((snapshot) => {
                 if (snapshot.val().Password == password) {
-                    console.log(snapshot.val())
+                    ToastAndroid.show('Sign In successful', ToastAndroid.SHORT)
                     setUser(snapshot.val())
                     setUsername('')
                     setPassword('')
